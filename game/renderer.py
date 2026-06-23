@@ -1,3 +1,5 @@
+from turtle import width
+
 import pygame
 
 
@@ -11,7 +13,8 @@ class Renderer:
         pygame.init()
 
         self.screen = pygame.display.set_mode(
-            (self.WIDTH, self.HEIGHT)
+            (self.WIDTH, self.HEIGHT),
+            pygame.RESIZABLE
         )
 
         pygame.display.set_caption(
@@ -78,8 +81,30 @@ class Renderer:
         preview_y
     ):
 
+        # Background
         self.screen.fill((18, 18, 22))
 
+        # Grid
+        width = self.screen.get_width()
+        height = self.screen.get_height()
+
+        for x in range(0, width, 50):
+            pygame.draw.line(
+                self.screen,
+                (30, 30, 35),
+                (x, 0),
+                (x, height)
+            )
+
+        for y in range(0, height, 50):
+            pygame.draw.line(
+                self.screen,
+                (30, 30, 35),
+                (0, y),
+                (width, y)
+            )
+
+        # Instructions
         info_text = self.font.render(
             "LEFT: Select | RIGHT: Move | FIST: Place | Z: Undo | R: Clear",
             True,
@@ -88,6 +113,7 @@ class Renderer:
 
         self.screen.blit(info_text, (20, 10))
 
+        # Current Shape
         shape_text = self.font.render(
             f"Current Shape: {preview_shape}",
             True,
@@ -96,6 +122,16 @@ class Renderer:
 
         self.screen.blit(shape_text, (20, 45))
 
+        # Shape Count
+        count_text = self.font.render(
+            f"Shapes: {len(placed_shapes)}",
+            True,
+            (255, 255, 255)
+        )
+
+        self.screen.blit(count_text, (20, 80))
+
+        # Draw placed shapes
         for shape in placed_shapes:
 
             self.draw_shape(
@@ -104,6 +140,7 @@ class Renderer:
                 shape.y
             )
 
+        # Draw preview shape
         if preview_shape:
 
             self.draw_shape(
