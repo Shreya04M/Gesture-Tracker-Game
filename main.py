@@ -13,7 +13,15 @@ from game.renderer import Renderer
 def main():
 
     camera = Camera()
-
+    cv2.namedWindow(
+        "Hand Tracking",
+        cv2.WINDOW_NORMAL
+    )
+    cv2.resizeWindow(
+        "Hand Tracking",
+        500,
+        350
+    )
     tracker = HandTracker()
 
     detector = GestureDetector()
